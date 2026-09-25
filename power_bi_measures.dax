@@ -1,0 +1,31 @@
+-- =====================================================================
+-- POWER BI DAX MEASURES FOR GLOBAL SALES & CUSTOMER TIERING
+-- =====================================================================
+
+-- 1. Total Net Revenue across all filtered contexts
+Total_Net_Revenue = SUM('GOLD_CUSTOMER_SALES_SUMMARY'[LIFETIME_SPEND])
+
+-- 2. Total Unique Orders placed by customers
+Total_Orders_Count = SUM('GOLD_CUSTOMER_SALES_SUMMARY'[TOTAL_ORDERS])
+
+-- 3. Average Revenue Per User (ARPU)
+ARPU = 
+DIVIDE(
+    [Total_Net_Revenue], 
+    DISTINCTCOUNT('GOLD_CUSTOMER_SALES_SUMMARY'[CUSTOMER_ID]), 
+    0
+)
+
+-- 4. VIP Platinum Revenue Share (Highlighting high-value segments)
+VIP_Platinum_Revenue = 
+CALCULATE(
+    [Total_Net_Revenue],
+    'GOLD_CUSTOMER_SALES_SUMMARY'[CUSTOMER_SEGMENT] = "VIP Platinum"
+)
+
+VIP_Platinum_Share = 
+DIVIDE(
+    [VIP_Platinum_Revenue], 
+    [Total_Net_Revenue], 
+    0
+)
