@@ -68,3 +68,6 @@ DIVIDE(
     [Total_Net_Revenue], 
     0
 )
+
+Production Note: 
+This pipeline can be fully automated using Snowflake Tasks & Streams on a CRON schedule to ensure continuous ingestion before Power BI queries the Gold layer via DirectQuery.
