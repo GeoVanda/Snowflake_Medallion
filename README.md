@@ -40,26 +40,28 @@ To keep the pipeline streamlined and easy to test, the entire end-to-end process
 
 ## 📊 Business Intelligence & Power BI Integration
 
-To transform the processed data into actionable insights, the `GOLD_CUSTOMER_SALES_SUMMARY` table feeds directly into a Power BI executive dashboard. This enables stakeholders to track regional revenues, monitor order volumes, and evaluate customer segmentation tiers interactively.
+To transform the processed data into actionable insights, the `GOLD_CUSTOMER_SALES_SUMMARY` table feeds directly into a Power BI executive dashboard. 
+
+* **Connection Mode:** Connected via **Import Mode** (optimized for fast local calculations on aggregated summaries) with a **Scheduled Daily Refresh** configured in Power BI Service to sync automatically right after the Snowflake pipeline execution; or optionally via **DirectQuery** for live transactional reporting against Snowflake.
 
 ### Dashboard Preview
-
 ![Power BI Executive Dashboard](assets/powerbi_dashboard.png)
 
 ### Core DAX Measures (`power_bi_measures.dax`)
 
 The report utilizes optimized DAX measures to compute dynamic business metrics:
 
+```dax
 -- Total Net Revenue across active filter contexts
-
 Total_Net_Revenue = SUM('GOLD_CUSTOMER_SALES_SUMMARY'[LIFETIME_SPEND])
 
--- Average Revenue Per User (ARPU)
+-- Total Orders Count
+Total_Orders_Count = SUM('GOLD_CUSTOMER_SALES_SUMMARY'[TOTAL_ORDERS])
 
+-- Average Revenue Per User (ARPU)
 ARPU = DIVIDE([Total_Net_Revenue], DISTINCTCOUNT('GOLD_CUSTOMER_SALES_SUMMARY'[CUSTOMER_ID]), 0)
 
 -- VIP Platinum Revenue Contribution Share
-
 VIP_Platinum_Share = 
 DIVIDE(
     CALCULATE([Total_Net_Revenue], 'GOLD_CUSTOMER_SALES_SUMMARY'[CUSTOMER_SEGMENT] = "VIP Platinum"), 
