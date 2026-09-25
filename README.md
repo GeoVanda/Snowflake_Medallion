@@ -52,19 +52,31 @@ To transform the processed data into actionable insights, the `GOLD_CUSTOMER_SAL
 The report utilizes optimized DAX measures to compute dynamic business metrics:
 
 ```dax
--- Total Net Revenue across active filter contexts
+-- Total Net Revenue across all filtered contexts
 Total_Net_Revenue = SUM('GOLD_CUSTOMER_SALES_SUMMARY'[LIFETIME_SPEND])
 
--- Total Orders Count
+-- Total Unique Orders placed by customers
 Total_Orders_Count = SUM('GOLD_CUSTOMER_SALES_SUMMARY'[TOTAL_ORDERS])
 
 -- Average Revenue Per User (ARPU)
-ARPU = DIVIDE([Total_Net_Revenue], DISTINCTCOUNT('GOLD_CUSTOMER_SALES_SUMMARY'[CUSTOMER_ID]), 0)
+ARPU = 
+DIVIDE(
+    [Total_Net_Revenue], 
+    DISTINCTCOUNT('GOLD_CUSTOMER_SALES_SUMMARY'[CUSTOMER_ID]), 
+    0
+)
 
--- VIP Platinum Revenue Contribution Share
+-- VIP Platinum Revenue (Highlighting high-value segments)
+VIP_Platinum_Revenue = 
+CALCULATE(
+    [Total_Net_Revenue],
+    'GOLD_CUSTOMER_SALES_SUMMARY'[CUSTOMER_SEGMENT] = "VIP Platinum"
+)
+
+-- VIP Platinum Revenue Share percentage
 VIP_Platinum_Share = 
 DIVIDE(
-    CALCULATE([Total_Net_Revenue], 'GOLD_CUSTOMER_SALES_SUMMARY'[CUSTOMER_SEGMENT] = "VIP Platinum"), 
+    [VIP_Platinum_Revenue], 
     [Total_Net_Revenue], 
     0
 )

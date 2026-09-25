@@ -16,13 +16,14 @@ DIVIDE(
     0
 )
 
--- 4. VIP Platinum Revenue Share (Highlighting high-value segments)
+-- 4. VIP Platinum Revenue (Highlighting high-value segments)
 VIP_Platinum_Revenue = 
 CALCULATE(
     [Total_Net_Revenue],
     'GOLD_CUSTOMER_SALES_SUMMARY'[CUSTOMER_SEGMENT] = "VIP Platinum"
 )
 
+-- 5. VIP Platinum Revenue Share percentage
 VIP_Platinum_Share = 
 DIVIDE(
     [VIP_Platinum_Revenue], 
