@@ -22,14 +22,11 @@ SQL Advanced Concepts: User-Defined Functions (UDFs), Window Functions, Common T
 
 Data Engineering Practices: Automated bulk ingestion patterns, fault-tolerant loading (ON_ERROR = 'CONTINUE'), and multi-tier architectural design.
 
-📂 Repository Structure
-Plaintext
-├── 01_setup_and_infrastructure.sql  # Warehouse, database, and Medallion schemas setup
-├── 02_bronze_ingestion.sql          # Storage integration, external stage, and bulk copy
-├── 03_utility_functions.sql         # Custom SQL functions for fiscal calendar mapping
-├── 04_silver_transformation.sql     # Data cleansing, typing, and net revenue calculations
-└── 05_gold_analytics.sql            # Window functions and customer tiering models
+📂 Repository Structure & Execution
 
+To keep the pipeline streamlined and easy to test, the entire end-to-end process is contained within a single, well-documented script:
+
+global_sales_pipeline.sql: Contains the complete lifecycle script: from warehouse setup, storage integration, and bronze ingestion to utility functions, silver transformations and gold analytics.
 
 Key Highlights from the Code
 
